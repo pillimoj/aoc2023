@@ -13,8 +13,14 @@ private data class NumberSymbol(val x: IntRange, val y: Int, val number: Int) {
         }
     }
 
-    fun isValid(symbols: Set<Coord>): Boolean {
-        return symbols.intersect(adjacentPositions).isNotEmpty()
+    fun isValid(symbols: Map<Int, List<Coord>>): Boolean {
+        val candidateSymbols = listOf(
+            symbols.getOrDefault(y-1, emptyList()),
+            symbols.getOrDefault(y, emptyList()),
+            symbols.getOrDefault(y+1, emptyList()),
+        ).flatten()
+
+        return  adjacentPositions.intersect(candidateSymbols.toSet()).isNotEmpty()
     }
 
     fun isAdjacent(coord: Coord): Boolean {
@@ -62,7 +68,8 @@ private fun parseGearSymbols(input: List<String>): Set<Coord> {
 
 data object D03 : Day(3) {
     override fun a(): String {
-        val symbols = parseSymbols(puzzleInput)
+
+        val symbols = parseSymbols(puzzleInput).groupBy { it.y }
         val numberCandidates = parseNumbers(puzzleInput)
         val numbers = numberCandidates.filter { it.isValid(symbols) }
         val result = numbers.sumOf { it.number }
