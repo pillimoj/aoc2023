@@ -13,6 +13,4 @@ out
 /deployments
 gradle.properties
 
-
-# client build
-resources/public
+inputs/
