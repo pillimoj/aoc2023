@@ -38,10 +38,10 @@ data object D04 : Day(4) {
         val results = mutableListOf<Int>()
         val originalCards = puzzleInput.map { Card(it) }
         originalCards.reversed().forEachIndexed { originalIndex, card ->
-            val copies = List<Int>(card.wins) { j -> originalIndex - j - 1}
-            val numberOfTotalCards = 1 + copies.map {
+            val copies = List(card.wins) { j -> originalIndex - j - 1}
+            val numberOfTotalCards = 1 + copies.sumOf {
                 results[it]
-            }.sum()
+            }
             results.add(numberOfTotalCards)
         }
         val result = results.sum()
